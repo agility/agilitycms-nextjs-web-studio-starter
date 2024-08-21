@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
 
 		//we need to redirect to the correct url for preview
 		const slug = request.nextUrl.pathname
-		let redirectUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/preview/exit?locale=${locale}&slug=${encodeURIComponent(slug)}`
+		let redirectUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/preview/exit?locale=${locale}&ContentID=${contentIDStr}&slug=${encodeURIComponent(slug)}`
 
 		return NextResponse.redirect(redirectUrl)
 	} else if (contentIDStr) {
