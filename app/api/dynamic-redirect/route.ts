@@ -2,10 +2,16 @@ import { getDynamicPageURL } from "@agility/nextjs/node";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { draftMode } from "next/headers"
+import { url } from "inspector";
 
 export async function GET(req: NextRequest, res: NextResponse) {
 
-	const contentIDStr = req.nextUrl.searchParams.get("contentID") as string
+	const searchParams = req.nextUrl.searchParams
+	const contentIDStr = searchParams.get("ContentID") as string
+
+	console.log("Dynamic Redirect", { contentIDStr, nexturl: req.nextUrl.toString() })
+	console.log("Dynamic Redirect", { contentIDStr, url: req.url.toString() })
+
 	const contentID = parseInt(contentIDStr)
 
 	const preview = draftMode().isEnabled
@@ -16,7 +22,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
 		const redirectUrl = await getDynamicPageURL({ contentID, preview, slug: "" })
 		if (redirectUrl) {
 			console.log("Dynamic Page URL", { contentID, redirectUrl })
-			return NextResponse.redirect(redirectUrl)
+			return new Response(`Redirecting to Dynamic Page Item`, {
+				status: 307,
+				headers: {
+					"Location": redirectUrl,
+				}
+			});
 		}
 	}
 
