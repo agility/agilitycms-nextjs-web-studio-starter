@@ -45,6 +45,8 @@ export async function middleware(request: NextRequest) {
 		if (!isNaN(contentID) && contentID > 0) {
 			//*** this is a dynamic page request ***
 
+			console.log("redirect to dynamic page with content id", { contentIDStr })
+
 			let dynredirectUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/dynamic-redirect?contentID=${contentID}}`
 			return NextResponse.rewrite(dynredirectUrl)
 

@@ -15,9 +15,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
 		//get the slug for this page based on the sitemap and redirect there
 		const redirectUrl = await getDynamicPageURL({ contentID, preview, slug: "" })
 		if (redirectUrl) {
+			console.log("Dynamic Page URL", { contentID, redirectUrl })
 			return NextResponse.redirect(redirectUrl)
 		}
 	}
+
+	console.log("NO Dynamic Page URL for content id", { contentID })
 
 	//if we get here, it's a 404
 	return new Response(`Not Found`, {
