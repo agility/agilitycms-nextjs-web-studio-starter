@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
 		const locale = request.nextUrl.searchParams.get("lang")
 		const slug = request.nextUrl.pathname
 
-		console.log("redirect to preview mode", { agilityPreviewKey, locale, slug })
+		console.log("redirect to preview mode", { agilityPreviewKey, locale, slug, contentIDStr })
 
 		//valid preview key: we need to redirect to the correct url for preview
 		let redirectUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/preview?locale=${locale}&contentID=${contentIDStr}&slug=${encodeURIComponent(slug)}&agilitypreviewkey=${encodeURIComponent(agilityPreviewKey)}`
