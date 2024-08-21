@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, res: NextResponse) {
 	const locale = searchParams.get("lang")
 	const slug = request.nextUrl.pathname
 
-	const ContentID = searchParams.get('ContentID')
+	const ContentID = searchParams.get('contentID')
 
 	console.log("Preview Request", { agilityPreviewKey, slug, ContentID, url: request.nextUrl.toString() })
 
