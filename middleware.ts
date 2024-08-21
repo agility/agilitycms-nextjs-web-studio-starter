@@ -45,17 +45,25 @@ export async function middleware(request: NextRequest) {
 		if (!isNaN(contentID) && contentID > 0) {
 			//*** this is a dynamic page request ***
 
-			//get the slug for this page based on the sitemap and redirect there
-			const redirectUrl = await getDynamicPageURL({ contentID, preview: true, slug: "" })
-			if (redirectUrl) {
-				return NextResponse.redirect(redirectUrl)
-			}
+			let dynredirectUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/dynamic-redirect?contentID=${contentID}}`
+			return NextResponse.rewrite(dynredirectUrl)
+
 		}
 	}
+}
 
 
 
+export const config = {
 
-
-
+	matcher: [
+		/*
+		 * Match all request paths except for the ones starting with:
+		 * - api (API routes)
+		 * - _next/static (static files)
+		 * - _next/image (image optimization files)
+		 * - favicon.ico (favicon file)
+		 */
+		'/((?!api|_next/static|_next/image|favicon.ico).*)',
+	],
 }

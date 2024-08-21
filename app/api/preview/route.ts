@@ -39,12 +39,16 @@ export async function GET(request: NextRequest, res: NextResponse) {
 
 	let previewUrl = slug;
 
-	//TODO: these kinds of dynamic links should work by default (even outside of preview)
+	//if we have a content id, get the dynamic page url for it
 	if (ContentID) {
 		const dynamicPath = await getDynamicPageURL({ contentID: Number(ContentID), preview: true, slug: slug || undefined });
 		if (dynamicPath) {
 			previewUrl = dynamicPath;
 		}
+
+		console.log("Preview: Dynamic Page URL", { ContentID, previewUrl })
+
+
 	}
 
 	//enable draft/preview mode
