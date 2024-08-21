@@ -9,9 +9,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 	const searchParams = req.nextUrl.searchParams
 	const contentIDStr = searchParams.get("ContentID") as string
 
-	console.log("Dynamic Redirect", { contentIDStr, nexturl: req.nextUrl.toString() })
-	console.log("Dynamic Redirect", { contentIDStr, url: req.url.toString() })
-
 	const contentID = parseInt(contentIDStr)
 
 	const preview = draftMode().isEnabled
@@ -21,7 +18,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 		//get the slug for this page based on the sitemap and redirect there
 		const redirectUrl = await getDynamicPageURL({ contentID, preview, slug: "" })
 		if (redirectUrl) {
-			console.log("Dynamic Page URL", { contentID, redirectUrl })
 			return new Response(`Redirecting to Dynamic Page Item`, {
 				status: 307,
 				headers: {
@@ -30,8 +26,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 			});
 		}
 	}
-
-	console.log("NO Dynamic Page URL for content id", { contentID })
 
 	//if we get here, it's a 404
 	return new Response(`Not Found`, {

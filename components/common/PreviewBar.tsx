@@ -28,7 +28,7 @@ const PreviewBar = ({isPreview, isDevelopmentMode, startPreviewMode}: Props) => 
 				// start preview mode
 				startPreviewMode(window.location.pathname)
 					.then(() => {
-						console.log("Preview Mode Started")
+						console.info("Preview Mode Started")
 					})
 					.catch((error) => {
 						console.error("Error generating preview key", error)

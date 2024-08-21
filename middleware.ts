@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
 	 *******************************/
 	const previewQ = request.nextUrl.searchParams.get("AgilityPreview")
 	let contentIDStr = request.nextUrl.searchParams.get("ContentID") as string || ""
-	console.log("middleware", { previewQ, contentIDStr })
+
 	if (request.nextUrl.searchParams.has("agilitypreviewkey")) {
 		//*** this is a preview request ***
 		const agilityPreviewKey = request.nextUrl.searchParams.get("agilitypreviewkey") || ""
@@ -23,8 +23,6 @@ export async function middleware(request: NextRequest) {
 		//locale is also passed in the querystring on preview requests
 		const locale = request.nextUrl.searchParams.get("lang")
 		const slug = request.nextUrl.pathname
-
-		console.log("redirect to preview mode", { agilityPreviewKey, locale, slug, contentIDStr })
 
 		//valid preview key: we need to redirect to the correct url for preview
 		let redirectUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/preview?locale=${locale}&ContentID=${contentIDStr}&slug=${encodeURIComponent(slug)}&agilitypreviewkey=${encodeURIComponent(agilityPreviewKey)}`
@@ -44,8 +42,6 @@ export async function middleware(request: NextRequest) {
 		const contentID = parseInt(contentIDStr)
 		if (!isNaN(contentID) && contentID > 0) {
 			//*** this is a dynamic page request ***
-
-			console.log("redirect to dynamic page with content id", { contentIDStr })
 
 			let dynredirectUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/dynamic-redirect?ContentID=${contentID}`
 			return NextResponse.rewrite(dynredirectUrl)

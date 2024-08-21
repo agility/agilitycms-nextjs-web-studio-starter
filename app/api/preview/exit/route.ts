@@ -20,9 +20,6 @@ export async function GET(request: NextRequest, res: NextResponse) {
 			url = dynamicPath;
 		}
 
-		console.log("Preview: Dynamic Page URL", { ContentID, url })
-
-
 	}
 
 	// Redirect to the url

@@ -22,9 +22,6 @@ export async function GET(request: NextRequest, res: NextResponse) {
 
 	const ContentID = searchParams.get('ContentID')
 
-	console.log("Preview Request", { agilityPreviewKey, slug, ContentID, url: request.nextUrl.toString() })
-
-
 	//validate our preview key, also validate the requested page to preview exists
 	const validationResp = await validatePreview({
 		agilityPreviewKey,
@@ -45,9 +42,6 @@ export async function GET(request: NextRequest, res: NextResponse) {
 		if (dynamicPath) {
 			previewUrl = dynamicPath;
 		}
-
-		console.log("Preview: Dynamic Page URL", { ContentID, previewUrl })
-
 
 	}
 
