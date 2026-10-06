@@ -8,6 +8,8 @@ import {resolveAgilityMetaData} from "lib/cms-content/resolveAgilityMetaData"
 import NotFound from "./not-found"
 import InlineError from "components/common/InlineError"
 import {cacheConfig} from "lib/cms/cacheConfig"
+import {getPageScripts} from "lib/cms-content/getPageScripts"
+import {JsonLdScripts, PageScripts} from "components/common/PageScripts"
 
 export const revalidate = cacheConfig.pathRevalidateDuration
 export const runtime = "nodejs"
@@ -38,13 +40,22 @@ export default async function Page({params, searchParams}: PageProps) {
 
 	const AgilityPageTemplate = getPageTemplate(agilityData.pageTemplateName || "")
 
+	// JSON-LD and scripts from Additional Header Markup and the page's Scripts fields
+	// (generateMetadata can't output <script> tags, so they are rendered with the page)
+	const {jsonLd, headScripts, bodyScripts} = getPageScripts(agilityData.page)
+
 	return (
-		<div data-agility-page={agilityData.page?.pageID} data-agility-dynamic-content={agilityData.sitemapNode.contentID}>
-			{AgilityPageTemplate && <AgilityPageTemplate {...agilityData} />}
-			{!AgilityPageTemplate && (
-				// if we don't have a template for this page, show an error
-				<InlineError message={`No template found for page template name: ${agilityData.pageTemplateName}`} />
-			)}
-		</div>
+		<>
+			<JsonLdScripts jsonLd={jsonLd} />
+			<PageScripts scripts={headScripts} />
+			<div data-agility-page={agilityData.page?.pageID} data-agility-dynamic-content={agilityData.sitemapNode.contentID}>
+				{AgilityPageTemplate && <AgilityPageTemplate {...agilityData} />}
+				{!AgilityPageTemplate && (
+					// if we don't have a template for this page, show an error
+					<InlineError message={`No template found for page template name: ${agilityData.pageTemplateName}`} />
+				)}
+			</div>
+			<PageScripts scripts={bodyScripts} />
+		</>
 	)
 }
